@@ -14,10 +14,9 @@ action "Topic" {
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
 
-
 action "Publish" {
   needs = ["Topic", "EmailMessage"]
   uses = "actions/aws/cli@master"
-  args = "sns publish --topic-arn `jq .TopicArn /github/home/Topic.json --raw-output` --subject \"[$GITHUB_REPOSITORY] Code was pushed to $GITHUB_REF\" --message file:///github/home/EmailMessage.Body.txt"
+  args = "sns publish --topic-arn `jq .TopicArn /github/home/Topic.json --raw-output`  --message file:///github/home/EmailMessage.Body.txt"
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
