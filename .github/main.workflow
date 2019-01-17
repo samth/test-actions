@@ -9,7 +9,6 @@ action "EmailMessage" {
 
 action "Topic" {
   uses = "actions/aws/cli@master"
-  needs = ["EmailMessage"]
   args = "sns create-topic --name my-topic"
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
@@ -17,6 +16,6 @@ action "Topic" {
 action "Publish" {
   needs = ["Topic", "EmailMessage"]
   uses = "actions/aws/cli@master"
-  args = "sns publish --topic-arn `jq .TopicArn /github/home/Topic.json --raw-output` --subject "`cat /github/home/EmailMessage.Subject.txt`" --message file:///github/home/EmailMessage.Body.txt"
+  args = "sns publish --topic-arn `jq .TopicArn /github/home/Topic.json --raw-output` --subject \"`cat /github/home/EmailMessage.Subject.txt`\" --message file:///github/home/EmailMessage.Body.txt"
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
