@@ -10,7 +10,7 @@ action "EmailMessage" {
 action "Topic" {
   needs = ["EmailMessage"]
   uses = "actions/aws@master"
-  args = "sns create-topic --name my-topic"
+  args = "echo 'hello' && sns create-topic --name my-topic"
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
 
