@@ -4,7 +4,7 @@ workflow "Publish to SNS topic on push" {
 }
 
 action "EmailMessage" {
-  uses = "./.github/actions/generate-email-message"
+  uses = "racket/email-notifications/generate-email-message@master"
 }
 
 action "Publish" {
