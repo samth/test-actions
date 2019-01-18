@@ -7,15 +7,9 @@ action "EmailMessage" {
   uses = "./.github/actions/generate-email-message"
 }
 
-action "Topic" {
-  uses = "actions/aws/cli@master"
-  args = "sns create-topic --name my-topic"
-  secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
-}
-
 action "Publish" {
-  needs = ["Topic", "EmailMessage"]
+  needs = ["EmailMessage"]
   uses = "actions/aws/cli@master"
-  args = "sns publish --topic-arn `jq .TopicArn /github/home/Topic.json --raw-output` --subject \"`cat /github/home/EmailMessage.Subject.txt`\" --message file:///github/home/EmailMessage.Body.txt"
+  args = "ses send-email --from 'commit-notifications@racket-lang.org' --to 'samth@indiana.edu' --subject file:///github/home/EmailMessage.Subject.txt --text file:///github/home/EmailMessage.Body.txt"
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
